@@ -13,11 +13,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/workflows/build.yml
-        with:
-          image: ghcr.io/hiroxto/training-ghcr-alpine
-          context: ./src/alpine
+    uses: ./.github/workflows/build.yml
+    with:
+      image: ghcr.io/hiroxto/training-ghcr-alpine
+      context: ./src/alpine
