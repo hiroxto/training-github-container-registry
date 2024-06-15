@@ -2,8 +2,10 @@ name: Build alpine
 
 on:
   push:
+    branches:
+      - main
     paths:
-      - "src/alpine/**"
+      - src/alpine/**
   workflow_dispatch:
 
 permissions:
