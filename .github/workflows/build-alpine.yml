@@ -17,3 +17,4 @@ jobs:
     with:
       image: ghcr.io/hiroxto/training-ghcr-alpine
       context: ./src/alpine
+      platforms: linux/amd64,linux/arm64
