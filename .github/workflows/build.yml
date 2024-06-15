@@ -45,11 +45,10 @@ jobs:
         with:
           images: ${{ inputs.image }}
           tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
             type=schedule,pattern={{date 'YYYYMMDD-hhmmss' tz='Asia/Tokyo'}}
             type=sha
-          flavor: |
-            latest=auto
 
       - name: Build and Push
         uses: docker/build-push-action@v5
