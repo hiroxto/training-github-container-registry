@@ -1,14 +1,25 @@
 name: Build Docker
 
 on:
-  push:
-    paths:
-      - "src/alpine/**"
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      image:
+        required: true
+        type: string
+      context:
+        required: false
+        type: string
+        default: .
+      dockerfile:
+        required: false
+        type: string
+        default: Dockerfile
+      platforms:
+        required: false
+        type: string
+        default: linux/amd64
 
 permissions:
-  actions: read
-  contents: read
   packages: write
 
 jobs:
@@ -32,7 +43,7 @@ jobs:
         id: metadata
         uses: docker/metadata-action@v4
         with:
-          images: "ghcr.io/hiroxto/training-ghcr-alpine"
+          images: ${{ inputs.image }}
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
@@ -43,11 +54,11 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          context: ./src/alpine
-          file: ./src/alpine/Dockerfile
-          tags: '${{ steps.metadata.outputs.tags }}'
-          labels: '${{ steps.metadata.outputs.labels }}'
-          platforms: linux/amd64
+          context: ${{ inputs.context }}
+          file: ${{ inputs.context }}/${{ inputs.dockerfile }}
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
+          platforms: ${{ inputs.platforms }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
